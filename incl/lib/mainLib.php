@@ -661,7 +661,7 @@ class mainLib {
 		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('3', :value, :levelID, :timestamp, :id)");
 		$query->execute([':value' => $coins, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $levelID]);
 	}
-	public function songReupload($url){
+	public function songReupload($url, $author, $name){
 		require __DIR__ . "/../../incl/lib/connection.php";
 		require_once __DIR__ . "/../../incl/lib/exploitPatch.php";
 		$song = str_replace("www.dropbox.com","dl.dropboxusercontent.com",$url);
@@ -674,17 +674,17 @@ class mainLib {
 			if($count != 0){
 				return "-3";
 			}
-			$name = ExploitPatch::remove(urldecode(str_replace([".mp3",".webm",".mp4",".wav"], "", basename($song))));
-			$author = "Reupload";
+			if(empty($name)) $name = ExploitPatch::remove(urldecode(str_replace([".mp3",".webm",".mp4",".wav"], "", basename($song))));
+			if(empty($author)) $author = "Reupload";
 			$info = $this->getFileInfo($song);
 			$size = $info['size'];
 			if(substr($info['type'], 0, 6) != "audio/")
 				return "-4";
 			$size = round($size / 1024 / 1024, 2);
 			$hash = "";
-			$query = $db->prepare("INSERT INTO songs (name, authorID, authorName, size, download, hash)
-			VALUES (:name, '9', :author, :size, :download, :hash)");
-			$query->execute([':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash]);
+			$query = $db->prepare("INSERT INTO songs (name, authorID, authorName, size, download, hash, reuploadTime)
+			VALUES (:name, '9', :author, :size, :download, :hash, :time)");
+			$query->execute([':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash, ':time' => time()]);
 			return $db->lastInsertId();
 		}else{
 			return "-2";
