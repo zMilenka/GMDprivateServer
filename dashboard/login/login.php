@@ -6,7 +6,7 @@ include "../../config/security.php";
 require "../incl/dashboardLib.php";
 $dl = new dashboardLib();
 require "../../incl/lib/generatePass.php";
-require "../../incl/lib/mainLib.php";
+require_once "../../incl/lib/mainLib.php";
 $gs = new mainLib();
 $dl->title($dl->getLocalizedString("loginBox"));
 $dl->printFooter('../');
