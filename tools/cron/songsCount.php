@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 chdir(dirname(__FILE__));
 set_time_limit(0);
 include "../../incl/lib/connection.php";
