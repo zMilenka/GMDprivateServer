@@ -1,10 +1,10 @@
 <?php
+error_reporting(0);
 chdir(dirname(__FILE__));
 set_time_limit(0);
 include "../../incl/lib/connection.php";
 //var_dump($result);
 //getting accounts
-echo "Calculating levelsCount for songs";
 $query = $db->prepare("UPDATE songs
 	LEFT JOIN
 	(
@@ -13,5 +13,4 @@ $query = $db->prepare("UPDATE songs
 	ON calculated.songID = songs.ID
 	SET songs.levelsCount = IFNULL(calculated.levelsCount, 0)");
 $query->execute();
-echo "<hr>";
 ?>

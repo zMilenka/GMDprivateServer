@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 chdir(dirname(__FILE__));
 if(file_exists("../logs/fixfrndlog.txt")){
 	$cptime = file_get_contents("../logs/fixfrndlog.txt");
@@ -9,13 +10,12 @@ if(file_exists("../logs/fixfrndlog.txt")){
 		$remainmins = floor($remaintime / 60);
 		$remainsecs = $remainmins * 60;
 		$remainsecs = $remaintime - $remainsecs;
-		exit("Please wait $remainmins minutes and $remainsecs seconds before running ". basename($_SERVER['SCRIPT_NAME'])." again");
+		exit("-1");
 	}
 }
 file_put_contents("../logs/fixfrndlog.txt",time());
 set_time_limit(0);
 include "../../incl/lib/connection.php";
-echo "Calculating the amount of friends everyone has";
 $query = $db->prepare("UPDATE accounts
 	LEFT JOIN
 	(
@@ -30,5 +30,4 @@ $query = $db->prepare("UPDATE accounts
 	ON accounts.accountID = calculated.person
 	SET accounts.friendsCount = IFNULL(calculated.friends, 0)");
 $query->execute();
-echo "<hr>";
 ?>

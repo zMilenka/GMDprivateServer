@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 0);
+error_reporting(NULL);
 chdir(dirname(__FILE__));
 set_time_limit(0);
 include "fixcps.php";
@@ -19,6 +21,9 @@ flush();
 include "fixnames.php";
 ob_flush();
 flush();
-echo "CRON done";
+include "demonlistPoints.php";
+ob_flush();
+flush();
+echo "1";
 file_put_contents("../logs/cronlastrun.txt",time());
 ?>

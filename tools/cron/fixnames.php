@@ -1,10 +1,10 @@
 <?php
+error_reporting(0);
 $date = date("d-m");
 if($date == "01-04"){
 	exit();
 }
 chdir(dirname(__FILE__));
-echo "Setting user names to account names<br>";
 ob_flush();
 flush();
 set_time_limit(0);
@@ -21,4 +21,3 @@ $query = $db->prepare("UPDATE users
 	WHERE users.extID REGEXP '^-?[0-9]+$'
 	AND LENGTH(accounts.userName) > 69");
 $query->execute();
-echo "Done<hr>";

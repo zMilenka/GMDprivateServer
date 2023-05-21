@@ -1,8 +1,10 @@
 <?php
 include "../config/security.php";
+include "../config/mail.php";
 include "../incl/lib/connection.php";
+include_once "../incl/lib/mainLib.php";
+$gs = new mainLib();
 require_once "../incl/lib/exploitPatch.php";
-require "../incl/lib/generatePass.php";
 
 if(!isset($preactivateAccounts)){
 	$preactivateAccounts = true;
@@ -25,11 +27,11 @@ if($_POST["userName"] != ""){
 		echo "-2";
 	}else{
 		$hashpass = password_hash($password, PASSWORD_DEFAULT);
-		$gjp2 = GeneratePass::GJP2hash($password);
-		$query = $db->prepare("INSERT INTO accounts (userName, password, email, registerDate, isActive, gjp2)
-		VALUES (:userName, :password, :email, :time, :isActive, :gjp)");
-		$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':time' => time(), ':isActive' => $preactivateAccounts ? 1 : 0, ':gjp' => $gjp2]);
+		$query = $db->prepare("INSERT INTO accounts (userName, password, email, registerDate, isActive)
+		VALUES (:userName, :password, :email, :time, :isActive)");
+		$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':time' => time(), ':isActive' => $preactivateAccounts ? 1 : 0]);
 		echo "1";
+      	if($mailEnabled) $gs->mail($email, $userName);
 	}
 }
 ?>

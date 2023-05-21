@@ -117,6 +117,21 @@ class mainLib {
 		}
 		return array('diff' => $diff, 'auto' => $auto, 'demon' => $demon, 'name' => $diffname);
 	}
+	public function getLevelDiff($levelID) {
+		include __DIR__ . "/connection.php";
+		$diff = $db->prepare("SELECT starDifficulty FROM levels WHERE levelID = :id");
+		$diff->execute([':id' => $levelID]);
+		$diff = $diff->fetch();
+		$diff = $this->getDifficulty($diff["starDifficulty"], 0, 0);
+		return $diff;
+	}
+	public function getLevelStars($levelID) {
+		include __DIR__ . "/connection.php";
+		$diff = $db->prepare("SELECT starStars FROM levels WHERE levelID = :id");
+		$diff->execute([':id' => $levelID]);
+		$diff = $diff->fetch();
+		return $diff["starStars"];
+	}
 	public function getLength($length) {
 		switch($length){
 			case 0:
@@ -349,12 +364,15 @@ class mainLib {
 		}
 	}
 	public function getUserString($userdata) {
-		include __DIR__ . "/connection.php";
-		/*$query = $db->prepare("SELECT userName, extID FROM users WHERE userID = :id");
+		/*include __DIR__ . "/connection.php";
+		$query = $db->prepare("SELECT extID FROM users WHERE userID = :id");
 		$query->execute([':id' => $userID]);
-		$userdata = $query->fetch();*/
+		$userdata = $query->fetch();
+		$query = $db->prepare("SELECT userName FROM accounts WHERE accountID = :id");
+		$query->execute([':id' => $extID]);
+		$userName = $query->fetch();*/
 		$extID = is_numeric($userdata['extID']) ? $userdata['extID'] : 0;
-		return "${userdata['userID']}:${userdata['userName']}:${extID}";
+		return "${userdata['userID']}:${userdata["userName"]}:${extID}";
 	}
 	public function getSongString($song){
 		include __DIR__ . "/connection.php";
@@ -372,6 +390,37 @@ class mainLib {
 			$dl = urlencode($dl);
 		}
 		return "1~|~".$song["ID"]."~|~2~|~".str_replace("#", "", $song["name"])."~|~3~|~".$song["authorID"]."~|~4~|~".$song["authorName"]."~|~5~|~".$song["size"]."~|~6~|~~|~10~|~".$dl."~|~7~|~~|~8~|~1";
+	}
+	public function getClanInfo($clan, $column = "*") {
+	    if(!is_numeric($clan)) return;
+	    include __DIR__ . "/connection.php";
+	    $claninfo = $db->prepare("SELECT `$column` FROM clans WHERE ID = :id");
+	    $claninfo->execute([':id' => $clan]);
+	    $claninfo = $claninfo->fetch();
+	    if(empty($claninfo)) return false;
+	    else {
+	        if($column != "*") {
+	            if($column != "clan" AND $column != "desc") return $claninfo[$column];
+	            else return base64_decode($claninfo[$column]);
+	        }
+	        else return array("ID" => $claninfo["ID"], "clan" => base64_decode($claninfo["clan"]), "desc" => base64_decode($claninfo["desc"]), "clanOwner" => $claninfo["clanOwner"], "color" => $claninfo["color"], "isClosed" => $claninfo["isClosed"], "creationDate" => $claninfo["creationDate"]);
+	    }
+	}
+	public function getClanID($clan) {
+	    include __DIR__ . "/connection.php";
+	    $claninfo = $db->prepare("SELECT ID FROM clans WHERE clan = :id");
+	    $claninfo->execute([':id' => base64_encode($clan)]);
+	    $claninfo = $claninfo->fetch();
+	    return $claninfo["ID"];
+	}
+	public function isPlayerInClan($id) {
+	    include __DIR__ . "/connection.php";
+	    if(!is_numeric($id)) return;
+	    $claninfo = $db->prepare("SELECT clan FROM users WHERE extID = :id");
+	    $claninfo->execute([':id' => $id]);
+	    $claninfo = $claninfo->fetch();
+	    if(!empty($claninfo)) return $claninfo["clan"];
+	    else return false;
 	}
 	public function sendDiscordPM($receiver, $message){
 		include __DIR__ . "/../../config/discord.php";
@@ -407,6 +456,7 @@ class mainLib {
 		$headr['User-Agent'] = 'GMDprivateServer (https://github.com/Cvolton/GMDprivateServer, 1.0)';
 		curl_setopt($crl, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
 		curl_setopt($crl, CURLOPT_POSTFIELDS, $data_string);
+													   
 		$headr[] = 'Content-type: application/json';
 		$headr[] = 'Authorization: Bot '.$bottoken;
 		curl_setopt($crl, CURLOPT_HTTPHEADER,$headr);
@@ -434,6 +484,43 @@ class mainLib {
 		//var_dump($userinfo);
 		return $userinfo["username"] . "#" . $userinfo["discriminator"];
 	}
+	public function getDesc($lid, $dashboard = false) {
+		include __DIR__ . "/connection.php";
+		$desc = $db->prepare("SELECT levelDesc FROM levels WHERE levelID = :id");
+		$desc->execute([':id' => $lid]);
+		$desc = $desc->fetch();
+		if(empty($desc["levelDesc"])) return !$dashboard ? '*This level doesn\'t have description*' : '<text style="font-style:italic">This level doesn\'t have description</text>';
+		else return base64_decode($desc["levelDesc"]);
+	}
+	public function getLevelName($lid) {
+		include __DIR__ . "/connection.php";
+		$desc = $db->prepare("SELECT levelName FROM levels WHERE levelID = :id");
+		$desc->execute([':id' => $lid]); 
+		$desc = $desc->fetch();
+		if(!empty($desc["levelName"])) return $desc["levelName"]; else return false;
+	} 
+	public function getLevelStats($lid) {
+		include __DIR__ . "/connection.php";
+		$info = $db->prepare("SELECT downloads, likes, requestedStars FROM levels WHERE levelID = :id");
+		$info->execute([':id' => $lid]);
+		$info = $info->fetch();
+		if(!empty($info)) return array('dl' => $info["downloads"], 'likes' => $info["likes"], 'req' => $info["requestedStars"]);
+	}
+	public function getLevelAuthor($lid) {
+		include __DIR__ . "/connection.php";
+		$desc = $db->prepare("SELECT extID FROM levels WHERE levelID = :id");
+		$desc->execute([':id' => $lid]);
+		$desc = $desc->fetch();
+		return $desc["extID"];
+	} 
+	public function isRated($lid) {
+		include __DIR__ . "/connection.php";
+		$desc = $db->prepare("SELECT starStars FROM levels WHERE levelID = :id");
+		$desc->execute([':id' => $lid]);
+		$desc = $desc->fetch();
+		if($desc["starStars"] == 0) return false; 
+		else return true;
+	} 
 	public function randomString($length = 6) {
 		$randomString = openssl_random_pseudo_bytes($length);
 		if($randomString == false){
@@ -646,17 +733,13 @@ class mainLib {
 	}
 	public function rateLevel($accountID, $levelID, $stars, $difficulty, $auto, $demon){
 		if(!is_numeric($accountID)) return false;
-
 		include __DIR__ . "/connection.php";
 		//lets assume the perms check is done properly before
 		$query = "UPDATE levels SET starDemon=:demon, starAuto=:auto, starDifficulty=:diff, starStars=:stars, rateDate=:now WHERE levelID=:levelID";
 		$query = $db->prepare($query);	
 		$query->execute([':demon' => $demon, ':auto' => $auto, ':diff' => $difficulty, ':stars' => $stars, ':levelID'=>$levelID, ':now' => time()]);
-		
 		$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('1', :value, :value2, :levelID, :timestamp, :id)");
 		$query->execute([':value' => $this->getDiffFromStars($stars)["name"], ':timestamp' => time(), ':id' => $accountID, ':value2' => $stars, ':levelID' => $levelID]);
-		
-		
 	}
 	public function featureLevel($accountID, $levelID, $feature){
 		if(!is_numeric($accountID)) return false;
@@ -679,30 +762,30 @@ class mainLib {
 		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('3', :value, :levelID, :timestamp, :id)");
 		$query->execute([':value' => $coins, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $levelID]);
 	}
-	public function songReupload($url){
+	public function songReupload($url, $author, $name, $accountID){
 		require __DIR__ . "/../../incl/lib/connection.php";
 		require_once __DIR__ . "/../../incl/lib/exploitPatch.php";
 		$song = str_replace("www.dropbox.com","dl.dropboxusercontent.com",$url);
 		if (filter_var($song, FILTER_VALIDATE_URL) == TRUE && substr($song, 0, 4) == "http") {
 			$song = str_replace(["?dl=0","?dl=1"],"",$song);
 			$song = trim($song);
-			$query = $db->prepare("SELECT count(*) FROM songs WHERE download = :download");
+			$query = $db->prepare("SELECT ID FROM songs WHERE download = :download");
 			$query->execute([':download' => $song]);	
-			$count = $query->fetchColumn();
-			if($count != 0){
-				return "-3";
+			$count = $query->fetch();
+			if(!empty($count)){
+				return "-3".$count["ID"];
 			}
-			$name = ExploitPatch::remove(urldecode(str_replace([".mp3",".webm",".mp4",".wav"], "", basename($song))));
-			$author = "Reupload";
+			if(empty($name)) $name = ExploitPatch::remove(urldecode(str_replace([".mp3",".webm",".mp4",".wav"], "", basename($song))));
+			if(empty($author)) $author = "Reupload";
 			$info = $this->getFileInfo($song);
 			$size = $info['size'];
 			if(substr($info['type'], 0, 6) != "audio/")
 				return "-4";
 			$size = round($size / 1024 / 1024, 2);
 			$hash = "";
-			$query = $db->prepare("INSERT INTO songs (name, authorID, authorName, size, download, hash)
-			VALUES (:name, '9', :author, :size, :download, :hash)");
-			$query->execute([':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash]);
+			$query = $db->prepare("INSERT INTO songs (name, authorID, authorName, size, download, hash, reuploadTime, reuploadID)
+			VALUES (:name, '9', :author, :size, :download, :hash, :time, :ID)");
+			$query->execute([':name' => $name, ':download' => $song, ':author' => $author, ':size' => $size, ':hash' => $hash, ':time' => time(), ':ID' => $accountID]);
 			return $db->lastInsertId();
 		}else{
 			return "-2";
@@ -725,10 +808,55 @@ class mainLib {
 	}
 	public function suggestLevel($accountID, $levelID, $difficulty, $stars, $feat, $auto, $demon){
 		if(!is_numeric($accountID)) return false;
-		
 		include __DIR__ . "/connection.php";
 		$query = "INSERT INTO suggest (suggestBy, suggestLevelID, suggestDifficulty, suggestStars, suggestFeatured, suggestAuto, suggestDemon, timestamp) VALUES (:account, :level, :diff, :stars, :feat, :auto, :demon, :timestamp)";
 		$query = $db->prepare($query);
 		$query->execute([':account' => $accountID, ':level' => $levelID, ':diff' => $difficulty, ':stars' => $stars, ':feat' => $feat, ':auto' => $auto, ':demon' => $demon, ':timestamp' => time()]);
+	}
+ 	public function isUnlisted($levelID) {
+        include __DIR__."/connection.php";
+        $query = $db->prepare("SELECT count(*) FROM levels WHERE unlisted = 1, levelID = :id");
+        $query->execute([':id' => $levelID]);
+        $query = $query->fetch();
+        if(!empty($query)) return true; 
+        else return false;
+	}
+	 public function mail($mail = '', $user = '') {
+		if(empty($mail) OR empty($user)) return;
+		include __DIR__."/../../config/mail.php";
+		if($mailEnabled) {
+			include __DIR__."/connection.php";
+			include __DIR__."/../../config/dashboard.php";
+			$string = $this->randomString(4);
+			$query = $db->prepare("UPDATE accounts SET mail = :mail WHERE userName = :user");
+			$query->execute([':mail' => $string, ':user' => $user]);
+			include __DIR__."/../../config/mail/PHPMailer.php";
+			include __DIR__."/../../config/mail/SMTP.php";
+			include __DIR__."/../../config/mail/Exception.php";
+			$m = new PHPMailer\PHPMailer\PHPMailer();
+			$m->isSMTP();
+			$m->CharSet = 'utf-8';
+			$m->SMTPAuth = true;
+			$m->Host = $mailbox;
+			$m->Username = $mailuser;
+			$m->Password = $mailpass;
+			$m->Port = $mailport;
+			$m->SMTPOptions = array(
+				'ssl' => array(
+					'verify_peer' => false,
+					'verify_peer_name' => false,
+					'allow_self_signed' => true
+				)
+			);
+			$m->setFrom($yourmail, $gdps.'!');
+			$m->addAddress($mail, $user);
+			$m->isHTML(true);
+			$m->Subject = 'Confirm link';
+			$m->Body = '<h1 align=center>Hello, <b>'.$user.'</b>!</h1><br>
+			<p align=center>It seems, that you wanna register new account in <b>'.$gdps.'</b></p><br>
+			<p align=center>Here is your link!</p><br>
+			<h2 align=center>http://'.$_SERVER["HTTP_HOST"].'/database/dashboard/login/activate.php?mail='.$string.'</h2>';
+			$m->send();
+		}
 	}
 }
