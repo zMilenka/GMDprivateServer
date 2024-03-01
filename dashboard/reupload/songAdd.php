@@ -3,6 +3,7 @@ session_start();
 require_once "../incl/dashboardLib.php";
 require "../".$dbPath."incl/lib/Captcha.php";
 include "../".$dbPath."incl/lib/connection.php";
+include "../".$dbPath."incl/lib/exploitPatch.php";
 $dl = new dashboardLib();
 require_once "../".$dbPath."incl/lib/mainLib.php";
 $gs = new mainLib();
@@ -30,7 +31,7 @@ if(!empty($_POST["url"])){
 		</div>', 'reupload');
 		die();
 	}
-	$songID = $gs->songReupload($_POST["url"], $_POST["author"], $_POST["name"], $_SESSION["accountID"]);
+	$songID = $gs->songReupload($_POST["url"], strip_tags(ExploitPatch::rucharclean($_POST["author"], 30)), strip_tags(ExploitPatch::rucharclean($_POST["name"], 40)), $_SESSION["accountID"]);
 	if($songID < 0){
 		$existed = str_replace('-3', '', $songID);
 		if($songID != $existed) {
@@ -54,7 +55,7 @@ if(!empty($_POST["url"])){
 		$dl->printSong('<div class="form">
 		<h1>'.$dl->getLocalizedString("songAdd").'</h1>
 		<form class="form__inner" method="post" action="">
-				<p>'.$dl->getLocalizedString("songID").''.$songID.'</p>
+				<p>'.$dl->getLocalizedString("songID").'<b style="font-size: inherit;" class="accbtn songidyeah" id="copy'.$songID.'" onclick="copysong('.$songID.')">'.$songID.'</b></p>
 				<button type="button" onclick="a(\'reupload/songAdd.php\', true, true, \'GET\')"class="btn-song">'.$dl->getLocalizedString("songAddAnotherBTN").'</button>
 			</form>
 		</div>', 'reupload');
@@ -67,9 +68,7 @@ if(!empty($_POST["url"])){
         <div class="field"><input type="text" name="url" id="p1" placeholder="'.$dl->getLocalizedString("songAddUrlFieldPlaceholder").'"></div>
 		<div class="field"><input type="text" name="author" placeholder="'.$dl->getLocalizedString("songAddAuthorFieldPlaceholder").'"></div>
 		<div class="field"><input type="text" name="name" placeholder="'.$dl->getLocalizedString("songAddNameFieldPlaceholder").'"></div>
-		', 'reupload');
-		Captcha::displayCaptcha();
-        echo '<button type="button" onclick="a(\'reupload/songAdd.php\', true, true, \'POST\')" class="btn-song btn-block" id="submit" disabled>'.$dl->getLocalizedString("reuploadBTN").'</button>
+		'.Captcha::displayCaptcha(true).'<button type="button" onclick="a(\'reupload/songAdd.php\', true, true, \'POST\')" class="btn-song btn-block" id="submit" disabled>'.$dl->getLocalizedString("reuploadBTN").'</button>
     </form>
 </div>
 <script>
@@ -87,7 +86,7 @@ $(document).on("keyup keypress change keydown",function(){
                 btn.classList.add("btn-song");
 	}
 });
-</script>';
+</script>', 'reupload');
 }
 } else {
 	$dl->printSong('<div class="form">

@@ -10,6 +10,7 @@
 	.profileform{width:75vw !important;max-height: max-content !important;margin: 20px 0px 50px 0px !important;}
 	.packfc .profilepic {font-size: 15px !important;}
 	.itemsbox {width: 75% !important;}
+	.songUploadDiv {min-width: 55vw !important;}
 }
 
 @media (min-width: 1537px) {
@@ -22,7 +23,7 @@
 	.form h1 {font-size:28px !important;}
 	.form__inner p {font-size:17px !important;}
     .profilenick {font-size: 15px !important;}
-    .profilepic {font-size: 15px !important;}
+    .mavdiv .accbtn, .profilepic {font-size: 15px !important;}
     .songacc {font-size: 13px !important;}
     .songidyeah {font-size: 11px !important;}
 	.btn-group {right: 5px !important;}
@@ -63,7 +64,7 @@
 	.itemsbox {flex-direction: column !important; margin-left: 2.5vw !important; width: 95vw !important; margin-bottom: 50px !important; margin-top: 15px !important}
 	.itemslist {width: max-content !important; flex-direction: row !important; flex-wrap: nowrap !important;}
 	.itembtn {width: max-content !important; margin-right: 0px !important;}
-	.itemoverflow {overflow-x: auto; max-width: 100%; padding-right: 10px;}
+	.itemoverflow {overflow-x: auto !important; max-width: 100%; padding-right: 10px;overflow-y: hidden !important;}
 	.acccomments {flex-direction: column-reverse !important; align-items: center !important;}
 	.acccomments h3 {font-size:11px !important;}
 	.acclistnick, .acclistdiv {flex-direction: column; align-items: center; margin-left: 0px !important;}
@@ -77,6 +78,23 @@
 	.suggest .accbtn, .suggest .levelname {font-size:23px !important;}
 	.suggest .dltext {font-size:18px !important;}
 	.buffer {margin: 0px !important;}
+	.quests-form {height: 80% !important;}
+	.audioDiv {width: 98% !important; left: 1% !important; grid-gap: 0px !important;}
+	.audioDiv .cover, .audioDiv .image {width: 67px !important; height: 67px !important}
+	.audioDiv .name {margin: 0px !important; font-size: 18px !important;}
+	.audioDiv .track {width: 78% !important; margin-left: 10px !important;}
+	.audioDiv .length {min-width: 0px !important; width: 100% !important;}
+	.audioDiv .author {font-size: 15px !important;}
+	.audioDiv .volumeDiv {height: 65px !important;}
+	.audioDiv .queueDiv {bottom: 110% !important;}
+	.queueDiv .track {width: 100% !important; margin-left: 0px !important;}
+	.audioDiv .length.volume {min-width: 65px !important; bottom: 28px !important;}
+	.audioDiv .anotherVolume {opacity: 1 !important; visibility: initial !important;}
+	.audioDiv i.volume {opacity: 0 !important; visibility: hidden !important;}
+	.audioDiv.showButton {width: max-content !important; padding: 15px !important;}
+	.audioDiv.showButton i {font-size: 20px !important;}
+	.audioDiv .cover i {font-size: 40px !important;}
+	.queueDiv .cover, .queueDiv .image {width: 55px !important; height: 55px !important}
 }
 
 * {
@@ -183,8 +201,14 @@ input, select {
 }
 
 .profilepic {
-	font-size: 25px;
-  	margin: 0px 5px 0px 5px;
+    font-size: 25px;
+    display: flex;
+    width: 100%;
+    margin: 0px 5px 0px 5px;
+    align-items: center;
+    justify-content: center;
+    grid-gap: 5px;
+	color: #c0c0c0;
 }
 
 .icon, .icon:visited {
@@ -307,9 +331,10 @@ input, select {
     background: #29282c;
 }
 
-.Options {
+
+.field-options {
 	appearance: none;
-	transition: ease 0.5s;
+	transition: 0.2s;
 }
 
 .profile {
@@ -349,7 +374,8 @@ input, select {
  
 .msgbox::-webkit-scrollbar-thumb,
 .form::-webkit-scrollbar-thumb,
-.clandesc::-webkit-scrollbar-thumb {
+.clandesc::-webkit-scrollbar-thumb,
+.audioDiv .queueDiv::-webkit-scrollbar-thumb {
    background-color: #373A3F;
    border-radius: 100px;
   	border: 4px solid #181a1b;
@@ -456,11 +482,11 @@ input, select {
     border-top: 3px solid #181a1b !important;
 }
 
+.field input,
 .card input,
 .form-control,
-.field input,
 #input {
-	border-radius: 500px;
+    border-radius: 500px;
     border: 0px solid #141414;
     background-color: rgb(0 0 0 / 2%);
     outline: none;
@@ -481,7 +507,6 @@ input, select {
     background: #141414;
     color: gray;
 }
-
 
 .details .field input {
   display: block;
@@ -923,7 +948,7 @@ table,
 }
 
 .content {
-    background-color: #36393e;
+    background-color: transparent;
     color: #a7a8aa;
     border-radius: 25px;
 }
@@ -1315,6 +1340,11 @@ label {
 	display: flex;
 	max-width: 500px;
 	border-radius: 35px;
+	justify-content: center;
+    align-content: flex-start;
+    align-items: center;
+	padding: 15px 0px 15px 15px;
+	grid-gap: 10px;
 }
 
 .messengerbox h1 {
@@ -1478,7 +1508,8 @@ body:has(.audio) {
 .itemoverflow {
 	border-radius: 30px;
 	overflow: auto;
-    width: 70%;
+    width: 100%;
+	overflow-x: hidden;
 }
 
 .acccomments {
@@ -1560,7 +1591,7 @@ body:has(.audio) {
 	padding-bottom: 20px;
 	width: 60vw;
 	height: 77vh;
-	margin-top: 10px;
+	margin-top: 1.5%;
 	border-radius: 45px;
 	overflow: auto;
 	overflow-x: hidden;
@@ -1572,12 +1603,6 @@ body:has(.audio) {
 	display: flex;
 	grid-gap: 5px;
 	align-items: center;
-}
-
-.packname h1 {
-	margin: 0px;
-	margin-bottom: 5px;
-	font-weight: 700;
 }
 
 .packcard {
@@ -1655,4 +1680,324 @@ body:has(.audio) {
 
 .mavdiv details {
 	width: 100%;
+}
+
+.packname p {
+	margin-bottom: 10px;
+}
+
+.clan-form h1 {
+	margin: 10px 0px 0px;
+}
+
+.packname h1 {
+	margin: 0px;
+	margin-bottom: 5px;
+	font-weight: 700;
+}
+
+.clan-form.clans h1 {
+    margin: 15px 0 15px;
+}
+
+.messenger.msgs {
+	margin-top: 0px;
+}
+
+.mavdiv .accbtn {
+	font-size: 25px;
+}
+
+.audioDiv {
+	display: flex;
+	background: #181a1b;
+	border-radius: 20px;
+	position: fixed;
+	bottom: 45px;
+	left: 30px;
+	padding: 10px;
+	align-items: center;
+	grid-gap: 10px;
+	min-width: 350px;
+	z-index: 2;
+	opacity: 0;
+	visibility: hidden;
+	transition: 0.2s;
+}
+
+.audioDiv p {
+	width: max-content;
+}
+
+.audioDiv .name {
+	font-weight: 700;
+	font-size: 24px;
+	color: white;
+	max-width: calc(100% - 62px);
+    margin-right: 62px;
+    text-align: left;
+}
+
+.audioDiv .author {
+	font-size: 20px;
+	max-width: calc(100% - 62px);
+	text-align: left;
+}
+
+.audioDiv .image {
+	width: 81px;
+	height: 81px;
+	aspect-ratio: 1/1;
+	border-radius: 15px;
+	position: absolute;
+	top: 0px;
+}
+
+.audioDiv .track {
+	display: flex;
+	flex-direction: column;
+	line-height: 1;
+	grid-gap: 7px;
+	position: relative
+}
+/*
+.audioDiv .length {
+	margin: 0px;
+	width: 300px;
+	background: #121212;
+	color: white;
+	border-radius: 500px;
+	height: 13px;
+}
+*/
+.audioDiv .cover {
+	position: relative;
+	width: 81px;
+	height: 81px;
+	cursor: pointer
+}
+
+.audioDiv .cover i {
+	z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background: #0000006b;
+    font-size: 50px;
+	opacity: 0;
+	transition: 0.25s;
+}
+
+.audioDiv .cover:hover i {
+	opacity: 1;
+}
+
+.audioDiv .length {
+  -webkit-appearance: none;
+  height: 10px;
+  background: #121212;
+  border-radius: 500px;
+  background-image: linear-gradient(#c0c0c0, #c0c0c0);
+  background-size: 0% 100%;
+  background-repeat: no-repeat;
+  min-width: 300px;
+  width: 100%;
+}
+
+.audioDiv .length::-webkit-slider-runnable-track  {
+  -webkit-appearance: none;
+  box-shadow: none;
+  border: none;
+  background: transparent;
+}
+
+.audioDiv .length.volume {
+    rotate: 270deg;
+    margin: 0px;
+	position: absolute;
+	bottom: 30px;
+	right: -22px;
+	min-width: 70px;
+    width: 100%;
+}
+
+.audioDiv i.volume {
+	color: white;
+	font-size: 17px;
+	transition: 0.2s;
+	position: absolute;
+	bottom: 0px;
+	opacity: 0;
+	visibility: hidden;
+}
+
+.audioDiv i.volume.show {
+	opacity: 1;
+	visibility: initial;
+}
+
+.audioDiv .volumeDiv {
+	display: flex;
+	position: relative;
+	height: 75px;
+	width: 25px;
+}
+
+.audioDiv .duration {
+	display: flex;
+    font-size: 18px;
+    align-items: center;
+    grid-gap: 5px;
+}
+
+.audioDiv .duration button:disabled {
+	color: gray;
+}
+
+.audioDiv .queueDiv {
+    position: absolute;
+    right: 0px;
+    top: auto;
+    bottom: 104px;
+    left: 0px;
+    width: max-content;
+    display: flex;
+    flex-direction: column-reverse;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 205px;
+	opacity: 0;
+	visibility: hidden;
+	transition: 0.2s;
+}
+
+.queueDiv .item {
+	display: flex;
+    width: 100%;
+    align-items: center;
+    grid-gap: 17px;
+}
+
+.queueDiv .cover, .queueDiv .image{
+	width: 55px;
+	height: 55px;
+}
+
+.queueDiv .cover i {
+	font-size: 30px;
+}
+
+.audioDiv .anotherVolume {
+	opacity: 0;
+	visibility: hidden;
+	transition: 0.2s;
+}
+
+.audioDiv .anotherVolume.show {
+	opacity: 1;
+	visibility: initial;
+}
+
+.queueDiv .name {
+	font-size: 21px;
+}
+
+.queueDiv .author {
+	font-size: 17px;
+}
+
+.queueDiv:has(.item) {
+	opacity: 1;
+	visibility: initial;
+}
+
+.audioDiv button i {
+	cursor: pointer;
+}
+
+.audioDiv .indicator {
+	display: none;
+}
+
+.audioDiv .track .buttons {
+	position: absolute;
+	top: 1px;
+	right: 8px;
+	display: flex;
+	grid-gap: 10px;
+}
+
+.audioDiv .track .buttons button,
+.queueDiv .track .buttons {
+	background: transparent;
+	border: none;
+	outline: none;
+	padding: 0px;
+	font-size: 18px;
+}
+
+.queueDiv .track {
+	width: 100%;
+}
+
+.queueDiv .name {
+	margin: 0px;
+}
+
+.audioDiv.showButton {
+	opacity: 0;
+	visibility: hidden;
+	width: max-content;
+	border-radius: 500px;
+	color: white;
+	min-width: 0px;
+    padding: 20px;
+	z-index: 3;
+}
+
+.audioDiv.showButton i {
+	font-size: 40px;
+}
+
+.audioDiv.showButton:has(.indicator) {
+	opacity: 1;
+	visibility: initial;
+}
+
+.audioDiv.showButton.show {
+	opacity: 0;
+	visibility: hidden;
+}
+
+.audioDiv.show {
+	opacity: 1;
+	visibility: initial;
+}
+
+.songUploadDiv {
+	width: 100%;
+	padding: 0px 10px 10px 10px;
+	background: #141414;
+	border-radius: 30px;
+	min-width: 35vw;
+}
+
+.forgotPassword {
+	width: 100%;
+	text-align: right;
+	background: none;
+	border: none;
+	padding: 0px;
+	margin: 5px 0px;
+	cursor: pointer;
+	color: #c0c0c0;
+	font-weight: 700;
+	transition: 0.2s;
+	outline: none;
+	font-size: 15px;
+}
+
+.forgotPassword:hover {
+	text-decoration: underline;
 }

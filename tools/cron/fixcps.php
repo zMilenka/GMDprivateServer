@@ -1,5 +1,4 @@
 <?php
-error_reporting(NULL);
 chdir(dirname(__FILE__));
 ob_flush();
 flush();
@@ -16,7 +15,7 @@ if(file_exists("../logs/fixcpslog.txt")){
 	}
 }
 file_put_contents("../logs/fixcpslog.txt",time());
-set_time_limit(0);
+if(function_exists("set_time_limit")) set_time_limit(0);
 $cplog = "";
 $people = array();
 include "../../incl/lib/connection.php";
@@ -37,7 +36,7 @@ $query = $db->prepare("UPDATE users
 	    ) AS featuredTable ON usersTable.userID = featuredTable.userID
 	    LEFT JOIN
 	    (
-	        SELECT count(*) as epic, userID FROM levels WHERE starEpic != 0 AND isCPShared = 0 GROUP BY(userID) 
+	        SELECT SUM(starEpic) as epic, userID FROM levels WHERE starEpic != 0 AND isCPShared = 0 GROUP BY(userID) 
 	    ) AS epicTable ON usersTable.userID = epicTable.userID
 	) calculated
 	ON users.userID = calculated.userID
@@ -58,7 +57,7 @@ foreach($result as $level){
 		$deservedcp++;
 	}
 	if($level["starEpic"] != 0){
-		$deservedcp += 2;
+		$deservedcp += $level["starEpic"]; // Epic - 1, Legendary - 2, Mythic - 3
 	}
 	$query = $db->prepare("SELECT userID FROM cpshares WHERE levelID = :levelID");
 	$query->execute([':levelID' => $level["levelID"]]);
@@ -86,7 +85,7 @@ foreach($result as $gauntlet){
 		//getting users
 		if($result["userID"] != ""){
 			$cplog .= $result["userID"] . " - +1\r\n";
-			$people[$result["userID"]] += 1;
+			$people[$result["userID"]] = ($people[$result["userID"]] ?? 0) + 1;
 		}
 	}
 }
@@ -104,7 +103,7 @@ foreach($result as $daily){
 	$result = $query->fetch();
 	//getting users
 	if($result["userID"] != ""){
-		$people[$result["userID"]] += 1;
+		$people[$result["userID"]] = ($people[$result["userID"]] ?? 0) + 1;
 		$cplog .= $result["userID"] . " - +1\r\n";
 	}
 }

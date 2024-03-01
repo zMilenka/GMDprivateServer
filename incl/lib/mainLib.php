@@ -133,7 +133,7 @@ class mainLib {
 		return $diff["starStars"];
 	}
 	public function getLength($length) {
-		switch($length){
+		switch($length) {
 			case 0:
 				return "Tiny";
 				break;
@@ -148,6 +148,9 @@ class mainLib {
 				break;
 			case 4:
 				return "XL";
+				break;
+			case 5:
+				return "Platformer";
 				break;
 			default:
 				return "Unknown";
@@ -219,13 +222,16 @@ class mainLib {
 		}
 		return array($starDifficulty, $starDemon, $starAuto);
 	}
-	public function getGauntletName($id){
-		$gauntlets = ["Unknown", "Fire", "Ice", "Poison", "Shadow", "Lava", "Bonus", "Chaos", "Demon", "Time", "Crystal", "Magic", "Spike", "Monster", "Doom", "Death"];
+	public function getGauntletName($id, $wholeArray = false){
+		$gauntlets = ["Unknown", "Fire", "Ice", "Poison", "Shadow", "Lava", "Bonus", "Chaos", "Demon", "Time", "Crystal", "Magic", "Spike", "Monster", "Doom", "Death", 'Forest', 'Rune', 'Force', 'Spooky', 'Dragon', 'Water', 'Haunted', 'Acid', 'Witch', 'Power', 'Potion', 'Snake', 'Toxic', 'Halloween', 'Treasure', 'Ghost', 'Spider', 'Gem', 'Inferno', 'Portal', 'Strange', 'Fantasy', 'Christmas', 'Surprise', 'Mystery', 'Cursed', 'Cyborg', 'Castle', 'Grave', 'Temple', 'World', 'Galaxy', 'Universe', 'Discord', 'Split'];
+		if($wholeArray) return $gauntlets;
 		if($id < 0 || $id >= count($gauntlets))
 			return $gauntlets[0];
 		return $gauntlets[$id];
 	}
-
+	public function getGauntletCount() {
+		return count($this->getGauntletName(0, true))-1;
+	}
 	function makeTime($delta)
 	{
 		if ($delta < 31536000)
@@ -406,7 +412,7 @@ class mainLib {
 	}
 	public function getClanInfo($clan, $column = "*") {
 		global $dashCheck;
-	    if(!is_numeric($clan) || $dashCheck == 'no') return false;
+	    if(!is_numeric($clan) || $dashCheck === 'no') return false;
 	    include __DIR__ . "/connection.php";
 	    $claninfo = $db->prepare("SELECT $column FROM clans WHERE ID = :id");
 	    $claninfo->execute([':id' => $clan]);
@@ -422,7 +428,7 @@ class mainLib {
 	}
 	public function getClanID($clan) {
 		global $dashCheck;
-	    if(!is_numeric($clan) || $dashCheck == 'no') return false;
+	    if($dashCheck === 'no') return false;
 	    include __DIR__ . "/connection.php";
 	    $claninfo = $db->prepare("SELECT ID FROM clans WHERE clan = :id");
 	    $claninfo->execute([':id' => base64_encode($clan)]);
@@ -431,13 +437,21 @@ class mainLib {
 	}
 	public function isPlayerInClan($id) {
 		global $dashCheck;
-	    if(!is_numeric($id) || $dashCheck == 'no') return false;
+	    if(!is_numeric($id) || $dashCheck === 'no') return false;
 	    include __DIR__ . "/connection.php";
 	    $claninfo = $db->prepare("SELECT clan FROM users WHERE extID = :id");
 	    $claninfo->execute([':id' => $id]);
 	    $claninfo = $claninfo->fetch();
 	    if(!empty($claninfo)) return $claninfo["clan"];
 	    else return false;
+	}
+	public function isPendingRequests($clan) {
+		global $dashCheck;
+	    if(!is_numeric($clan) || $dashCheck === 'no') return false;
+		include __DIR__ . "/connection.php";
+	    $claninfo = $db->prepare("SELECT count(*) FROM clanrequests WHERE clanID = :id");
+		$claninfo->execute([':id' => $clan]);
+		return $claninfo->fetchColumn();
 	}
 	public function sendDiscordPM($receiver, $message){
 		include __DIR__ . "/../../config/discord.php";
@@ -522,7 +536,8 @@ class mainLib {
 		$info = $db->prepare("SELECT downloads, likes, requestedStars FROM levels WHERE levelID = :id");
 		$info->execute([':id' => $lid]);
 		$info = $info->fetch();
-		if(!empty($info)) return array('dl' => $info["downloads"], 'likes' => $info["likes"], 'req' => $info["requestedStars"]);
+		$likes = $info["likes"]; // - $info['dislikes']
+		if(!empty($info)) return array('dl' => $info["downloads"], 'likes' => $likes, 'req' => $info["requestedStars"]);
 	}
 	public function getLevelAuthor($lid) {
 		include __DIR__ . "/connection.php";
@@ -759,15 +774,36 @@ class mainLib {
 		$query = $db->prepare("INSERT INTO modactions (type, value, value2, value3, timestamp, account) VALUES ('1', :value, :value2, :levelID, :timestamp, :id)");
 		$query->execute([':value' => $diffName, ':timestamp' => time(), ':id' => $accountID, ':value2' => $stars, ':levelID' => $levelID]);
 	}
-	public function featureLevel($accountID, $levelID, $feature){
+	public function featureLevel($accountID, $levelID, $state) {
 		if(!is_numeric($accountID)) return false;
-
+		switch($state) {
+            case 0:
+                $feature = 0;
+                $epic = 0;
+                break;
+            case 1:
+                $feature = 1;
+                $epic = 0;
+                break;
+            case 2: // Stole from TheJulfor
+                $feature = 1;
+                $epic = 1;
+                break;
+            case 3:
+                $feature = 1;
+                $epic = 2;
+                break;
+            case 4:
+                $feature = 1;
+                $epic = 3;
+                break;
+        }
 		include __DIR__ . "/connection.php";
-		$query = "UPDATE levels SET starFeatured=:feature, rateDate=:now WHERE levelID=:levelID";
+		$query = "UPDATE levels SET starFeatured=:feature, starEpic=:epic, rateDate=:now WHERE levelID=:levelID";
 		$query = $db->prepare($query);	
-		$query->execute([':feature' => $feature, ':levelID'=>$levelID, ':now' => time()]);
+		$query->execute([':feature' => $feature, ':epic' => $epic, ':levelID' => $levelID, ':now' => time()]);
 		$query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('2', :value, :levelID, :timestamp, :id)");
-		$query->execute([':value' => $feature, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $levelID]);
+		$query->execute([':value' => $state, ':timestamp' => time(), ':id' => $accountID, ':levelID' => $levelID]);
 	}
 	public function verifyCoinsLevel($accountID, $levelID, $coins){
 		if(!is_numeric($accountID)) return false;
@@ -839,7 +875,33 @@ class mainLib {
         if(!empty($query)) return true; 
         else return false;
 	}
-	public function mail($mail = '', $user = '') {
+	public function getListOwner($listID) {
+		if(!is_numeric($listID)) return false;
+		include __DIR__ . "/connection.php";
+		$query = $db->prepare('SELECT accountID FROM lists WHERE listID = :id');
+		$query->execute([':id' => $listID]);
+		return $query->fetchColumn();
+	}
+	public function getListLevels($listID) {
+		if(!is_numeric($listID)) return false;
+		include __DIR__ . "/connection.php";
+		$query = $db->prepare('SELECT listlevels FROM lists WHERE listID = :id');
+		$query->execute([':id' => $listID]);
+		return $query->fetchColumn();
+	}
+	public function getListDiffName($diff) {
+		if($diff == -1) return 'N/A';
+		$diffs = ['Auto', 'Easy', 'Normal', 'Hard', 'Harder', 'Extreme', 'Easy Demon', 'Medium Demon', 'Hard Demon', 'Insane Demon', 'Extreme Demon'];
+		return $diffs[$diff];
+	}
+	public function getListName($listID) {
+		if(!is_numeric($listID)) return false;
+		include __DIR__ . "/connection.php";
+		$query = $db->prepare('SELECT listName FROM lists WHERE listID = :id');
+		$query->execute([':id' => $listID]);
+		return $query->fetchColumn();
+	}
+	public function mail($mail = '', $user = '', $isForgotPass = false) {
 		if(empty($mail) OR empty($user)) return;
 		include __DIR__."/../../config/mail.php";
 		if($mailEnabled) {
@@ -849,9 +911,6 @@ class mainLib {
 			include __DIR__."/../../config/mail/SMTP.php";
 			include __DIR__."/../../config/mail/Exception.php";
 			$m = new PHPMailer\PHPMailer\PHPMailer();
-			$string = $this->randomString(4);
-			$query = $db->prepare("UPDATE accounts SET mail = :mail WHERE userName = :user");
-			$query->execute([':mail' => $string, ':user' => $user]);
 			$m->CharSet = 'utf-8';
 			$m->isSMTP();
 			$m->SMTPAuth = true;
@@ -863,11 +922,22 @@ class mainLib {
 			$m->setFrom($yourmail, $gdps);
 			$m->addAddress($mail, $user);
 			$m->isHTML(true);
-			$m->Subject = 'Confirm link';
-			$m->Body = '<h1 align=center>Hello, <b>'.$user.'</b>!</h1><br>
-			<h2 align=center>It seems, that you wanna register new account in <b>'.$gdps.'</b></h2><br>
-			<h2 align=center>Here is your link!</h2><br>
-			<h1 align=center>http://'.$_SERVER["HTTP_HOST"].'/database/dashboard/login/activate.php?mail='.$string.'</h1>';
+			if(!$isForgotPass) {
+				$string = $this->randomString(4);
+				$query = $db->prepare("UPDATE accounts SET mail = :mail WHERE userName = :user");
+				$query->execute([':mail' => $string, ':user' => $user]);
+				$m->Subject = 'Confirm link';
+				$m->Body = '<h1 align=center>Hello, <b>'.$user.'</b>!</h1><br>
+				<h2 align=center>It seems, that you wanna register new account in <b>'.$gdps.'</b></h2><br>
+				<h2 align=center>Here is your link!</h2><br>
+				<h1 align=center>'.dirname('https://'.$_SERVER["HTTP_HOST"].$_SERVER['REQUEST_URI']).'/activate.php?mail='.$string.'</h1>';
+			} else {
+				$m->Subject = 'Forgot password?';
+				$m->Body = '<h1 align=center>Hello, <b>'.$user.'</b>!</h1><br>
+				<h2 align=center>It seems, that you forgot your password in <b>'.$gdps.'</b>...</h2><br>
+				<h2 align=center>Here is your link!</h2><br>
+				<h1 align=center>https://'.$_SERVER["HTTP_HOST"].$_SERVER['REQUEST_URI'].'?code='.$isForgotPass.'</h1>';
+			}
 			return $m->send();
 		}
 	}

@@ -113,6 +113,8 @@ $string["smallPass"] = "Şifre çok kısa!";
 $string["passDontMatch"] = "Şifreler eşleşmiyor!";
 $string["emailDontMatch"] = "E-Postalar eşleşmiyor";
 $string["registered"] = "Hesap başarıyla oluşturuldu!";
+$string["bigNick"] = "Username is too long!";
+$string["mailExists"] = "There is a registered account using this email!";
 
 $string["changePassTitle"] = "Şifre değiştir";
 $string["changedPass"] = "Şifre başarıyla değiştirildi! Hesabına yeniden giriş yapman gerekiyor.";
@@ -151,7 +153,7 @@ $string["color"] = "Renk";
 $string["sameLevels"] = "Aynı bölümleri seçtin!";
 $string["show"] = "Göster";
 $string["packChange"] = "Harita Paketi Değiştir";
-$string["createNewPack"] = "Yeni Harita Paketi Oluştur!"; // Translate word "create" like "You'll need to create new map pack!", but its call to action
+$string["createNewPack"] = "Yeni Harita Paketi Oluştur!"; // Translate word "create" like its call to action
 
 $string["gauntletCreate"] = "Gauntlet Oluştur";
 $string["gauntletCreateTitle"] = "Gauntlet Oluştur";
@@ -166,7 +168,9 @@ $string["level3"] = "3 bölüm";
 $string["level4"] = "4 bölüm";
 $string["level5"] = "5 bölüm";
 $string["gauntletChange"] = "Gauntlet Değiştir";
-$string["createNewGauntlet"] = "Yeni Gauntlet Oluştur!"; // Translate word "create" like "You'll need to create new gauntlet!", but its call to action
+$string["createNewGauntlet"] = "Yeni Gauntlet Oluştur!"; // Translate word "create" like its call to action
+$string["gauntletCreateSuccessNew"] = 'Başarıyla <b>%1$s</b> adlı Gauntlet oluşturuldu!';
+$string["gauntletSelectAutomatic"] = "Otomatik olarak Gauntlet Seç";
 
 $string["addQuest"] = "Quest Ekle";
 $string["addQuestDesc"] = "Burada quest ekleyebilirsin!";
@@ -213,6 +217,10 @@ $string["modAboveYourRole"] = "Senden daha yüksek bir rolü vermeye çalışıy
 $string["makeNewMod"] = "Birini moderatör yap!";
 $string["reassignMod"] = "Yeniden moderatör ata";
 $string["reassign"] = "Yeniden ata";
+$string['demotePlayer'] = "Oyuncunun yetkisini düşür";
+$string['demotedPlayer'] = "<b>%s</b> adlı oyuncunun yetkisini başarıyla düşürdün!";
+$string['addedModNew'] = "<b>%s</b> adlı oyuncuya başarıyla moderatör yetkisi verdin!";
+$string['demoted'] = 'Demoted';
 
 $string["shareCPTitle"] = "Creator Point ekle";
 $string["shareCPDesc"] = "Burada kullanıcılara CP ekleyebilirsin!";
@@ -224,6 +232,7 @@ $string["shareCPSuccess"] = "Başarıyla bu bölüm için CP paylaşıldı. ";
 $string["shareCPSuccess2"] = "Paylaşılan kullanıcı:";
 $string["updateCron"] = "Belki de CP güncellemen lazım.";
 $string["shareCPOneMore"] = "Başka ekle?";
+$string['shareCPSuccessNew'] = '<b>%1$s</b> adlı seviyeye ve <b>%2$s</b> adlı oyuncuya başarıyla Creator Point paylaştın!';
 
 $string["messenger"] = "Messenger";
 $string["write"] = "Yaz";
@@ -284,11 +293,11 @@ $string["status"] = 'Durum';
 $string["checkRecord"] = 'Rekoru kontrol et';
 $string["record"] = 'Rekor';
 $string["recordDeleted"] = 'Rekor silindi!';
-$string["changeDemon"] = 'Change demon';
-$string["demonDeleted"] = 'Demon was deleted!';
-$string["changedDemon"] = 'You replaced <b>%s</b> to <b>%d</b> place!';
-$string["changeDemonDesc"] = 'Here you can change a demon!<br>
-If you want to delete demon, set place to 0.';
+$string["changeDemon"] = 'Demon değiştir';
+$string["demonDeleted"] = 'Demon silindi!';
+$string["changedDemon"] = '<b>%s</b> adlı demonun yerini <b>%d</b> adlı demon ile değiştirdin!';
+$string["changeDemonDesc"] = 'Burada demon değiştirebilirsin!<br>
+Demon değiştirmek istersen yer değişkenini 0 ayarla.';
 
 $string["didntActivatedEmail"] = 'Hesabını e-posta üzerinden aktive etmedin!';
 $string["checkMail"] = 'E-postanı kontrol etmelisin...';
@@ -339,10 +348,22 @@ $string["createClan"] = "Klan oluştur";
 $string["createdClan"] = "<span style='font-weight:700;color:#%s'>%s</span> klanını oluşturdun!";
 $string["createClanDesc"] = "Burada klan oluşturabilirsin!";
 $string["create"] = "Oluştur";
-$string["mainSettings"] = "Main settings";
+$string["mainSettings"] = "Ana ayarlar";
+$string["takenClanName"] = "Bu klan ismi zaten alınmış!";
 
-$string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> suggested <b>%4$s%3$s</b> for</text><text class="levelname">%2$s</text>'; // %1$s - Mod username, %2$s - level name, %3$s - x stars, %4$s - Featured/Epic (%4$s%3$s - Featured, x stars)
-$string["reportedName"] = '%1$s<text class="dltext"> was reported</text><text class="levelname">%2$s</text>';
+$string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> adlı oyuncu </text><text class="levelname">%2$s</text><text class="dltext"> adlı bölümü <b>%4$s%3$s</b> için önerdi.</text>'; // %1$s - Mod username, %2$s - level name, %3$s - x stars, %4$s - Featured/Epic (%4$s%3$s - Featured, x stars)
+$string["reportedName"] = '%1$s <text class="levelname">%2$s</text><text class="dltext"> adlı bölümü raporladı</text>';
+
+$string['listTable'] = "Listeler";
+$string['listTableMod'] = "Liste dışı listeler";
+$string['listTableYour'] = "Liste dışı listelerin";
+
+$string['forgotPasswordChangeTitle'] = "Change password";
+$string["successfullyChangedPass"] = "Password was successfully changed!";
+$string['forgotPasswordTitle'] = "Forgot password?";
+$string['maybeSentAMessage'] = "We'll send you a message if this account exists.";
+$string['forgotPasswordDesc'] = "Here you can request change password link if you forgot it!";
+$string['forgotPasswordButton'] = "Request link";
 
 /*
 	REUPLOAD
@@ -370,6 +391,7 @@ $string["size"] = "Boyut";
 $string["delete"] = "Sil";
 $string["change"] = "Değiştir";
 $string["chooseFile"] = "Bir şarkı seç";
+$string['yourNewSong'] = "Yeni şarkına bir göz at!";
 ///errors
 $string["songAddError-2"] = "Geçersiz URL (Şarkının bu linkte bulunduğundan emin olun.)";
 $string["songAddError-3"] = "Bu şarkı zaten transfer edilmiş. ID:";
@@ -524,6 +546,14 @@ $string["modAction23"] = "(23)Quest değiştirdi";
 $string["modAction24"] = "(24)Oyuncuyu yeniden atadı";
 $string["modAction25"] = "(25)Quest oluşturdu";
 $string["modAction26"] = "(26)Kullanıcı adı/şifre değiştirdi";
+$string["modAction30"] = "(30)Derecelendirilen liste";
+$string["modAction31"] = "(31)Gönderilen liste";
+$string["modAction32"] = "(32)Liste onayladı/onaylamadı";
+$string["modAction33"] = "(33)Liste paylaşıldı/paylaşılmadı";
+$string["modAction34"] = "(34)Liste silindi";
+$string["modAction35"] = "(35)Liste sahibi değiştirildi";
+$string["modAction36"] = "(36)Liste ismi değiştirildi";
+$string["modAction37"] = "(37)Liste açıklaması değiştirildi";
 $string["everyActions"] = "Tüm eylemler";
 $string["everyMod"] = "Tüm moderatörler";
 $string["Kish!"] = "Uzak dur!";
@@ -531,5 +561,6 @@ $string["noPermission"] = "İznin yok!";
 $string["noLogin?"] = "Hesabına giriş yapmadın!";
 $string["LoginBtn"] = "Hesaba giriş yap";
 $string["dashboard"] = "Dashboard";
+$string["userID"] = 'Kullanıcı ID';
 //errors
 $string["errorNoAccWithPerm"] = "HATA: '%s' izni hiçbir hesapta bulunamadı.";

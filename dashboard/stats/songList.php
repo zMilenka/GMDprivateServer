@@ -74,8 +74,8 @@ foreach($result as &$action){
 	$songIDlol = '<button id="copy'.$action["ID"].'" class="accbtn songidyeah" onclick="copysong('.$action["ID"].')">'.$action["ID"].'</button>';
 	$time = $dl->convertToDate($action["reuploadTime"], true);
 	$who = '<button type="button" onclick="a(\'profile/'.$gs->getAccountName($action['reuploadID']).'\', true, true, \'POST\')" style="margin:0;font-size:20px" class="accbtn songacc" name="accountID" value="'.$action["reuploadID"].'">'.$gs->getAccountName($action['reuploadID']).'</button>';
-  	$author = $action["authorName"];
-	$name = $action["name"];
+  	$author = htmlspecialchars($action["authorName"]);
+	$name = htmlspecialchars($action["name"]);
 	$size = $action["size"];
 	$download = str_replace('http://', 'https://', $action["download"]);
 	if($_SESSION["accountID"] != 0) {
@@ -103,15 +103,6 @@ foreach($result as &$action){
 								</div>';
 	if(mb_strlen($author) + mb_strlen($name) > 30) $fontsize = 17;
 	elseif(mb_strlen($author) + mb_strlen($name) > 20) $fontsize = 20;
-    if($action["isDisabled"]) {
-		$songsid = '<div style="text-decoration:line-through;color:#8b2e2c">'.$songsid.'</div>';
-		$author = '<div style="text-decoration:line-through;color:#8b2e2c">'.$author.'</div>';
-		$name = '<div style="text-decoration:line-through;color:#8b2e2c">'.$name.'</div>';
-      	$size = '<div style="text-decoration:line-through;color:#8b2e2c">'.$size.'</div>';
-      	$time = '<div style="text-decoration:line-through;color:#8b2e2c">'.$time.'</div>';
-		$btn = '<button type="button" style="display: contents;color: #ffb1ab;margin: 0;"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 5px;"><i class="fa-solid fa-xmark" aria-hidden="false"></i></div></button>';
-		$manage = '';
-	}
 	$songSize = '<p class="profilepic"><i class="fa-solid fa-weight-hanging"></i> '.$action["size"].' MB</p>';
 	$who = '<p class="profilepic" style="display: inline-flex;justify-content: center;grid-gap: 7px;"><i class="fa-solid fa-user-plus"></i> '.$who.'</p>';
 	$stats = $songSize.$who;

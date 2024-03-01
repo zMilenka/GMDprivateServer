@@ -113,6 +113,8 @@ $string["smallPass"] = "Пароль занадто короткий!";
 $string["passDontMatch"] = "Паролі не співпадають!";
 $string["emailDontMatch"] = "Пошти не співпадають!";
 $string["registered"] = "Ви успішно зареєстрували акаунт!";
+$string["bigNick"] = "Нікнейм занадто длинный!";
+$string["mailExists"] = "На этой почте уже зарегистрирован аккаунт!";
 
 $string["changePassTitle"] = "Зміна пароля";
 $string["changedPass"] = "Пароль успішно змінений! Вам потрібно заново ввійти в ваш акаунт.";
@@ -157,7 +159,7 @@ $string["createNewPack"] = "Створіть новий Мап-Пак!";
 $string["gauntletCreate"] = "Створити Гаунтлет";
 $string["gauntletCreateTitle"] = "Створення Гаунтлета";
 $string["gauntletCreateDesc"] = "Тут ви можете створити Гаунтлет!";
-$string["gauntletCreateSuccess"] = "Ви успішно створилиГаунтлет!";
+$string["gauntletCreateSuccess"] = "Ви успішно створили Гаунтлет!";
 $string["gauntletCreateOneMore"] = "Ще один Гаунтлет?";
 $string["chooseLevels"] = "Виберіть рівні!";
 $string["checkbox"] = "Підтвердити";
@@ -168,6 +170,8 @@ $string["level4"] = "4 рівень";
 $string["level5"] = "5 рівень";
 $string["gauntletChange"] = "Змінити Гаунтлет";
 $string["createNewGauntlet"] = "Створіть новий Гаунтлет!";
+$string["gauntletCreateSuccessNew"] = 'Ви успішно створили <b>%1$s</b>!';
+$string["gauntletSelectAutomatic"] = "Выбрать Гаунтлет автоматически";
 
 $string["addQuest"] = "Додати квест";
 $string["addQuestDesc"] = "Тут ви можете створити квест!";
@@ -214,6 +218,10 @@ $string["modAboveYourRole"] = "Ви намагаєтесь видати ігро
 $string["makeNewMod"] = "Призначте когось модератором!";
 $string["reassignMod"] = "Переназначити модератора";
 $string["reassign"] = "Переназначити";
+$string['demotePlayer'] = "Снять игрока с поста модератора";
+$string['demotedPlayer'] = "Вы успешно сняли игрока <b>%s</b> с поста модератора!";
+$string['addedModNew'] = "Вы успешно сделали модератором игрока <b>%s</b>!";
+$string['demoted'] = 'Снят';
 
 $string["shareCPTitle"] = "Поділитися Креатор Поїнтами";
 $string["shareCPDesc"] = "Тут ви можете поділитися Креатор Поїнтами з користувачами!";
@@ -225,6 +233,7 @@ $string["shareCPSuccess"] = "Ви успішно поділились Креат
 $string["shareCPSuccess2"] = "з користувачем";
 $string["updateCron"] = "Можливо, вам слід обновити Креатор Поїнти.";
 $string["shareCPOneMore"] = "Ще поділитися?";
+$string['shareCPSuccessNew'] = 'Ви успішно поділились Креатор Поїнтами рівня <b>%1$s</b> з користувачем <b>%2$s</b>!';
 
 $string["messenger"] = "Месенджер";
 $string["write"] = "Написати";
@@ -341,9 +350,21 @@ $string["createdClan"] = "Ви успішно створили клан <span st
 $string["createClanDesc"] = "Тут ви можете створити клан!";
 $string["create"] = "Створити";
 $string["mainSettings"] = "Основні налаштування";
+$string["takenClanName"] = "Данное название клана уже занято!";
 
 $string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> запропонував оцінити </text><text class="levelname">%2$s</text><text class="dltext"> на <b>%4$s%3$s</b></text>';
 $string["reportedName"] = '%1$s<text class="dltext"> зарепортили</text><text class="levelname">%2$s</text>';
+
+$string['listTable'] = "Списки уровней";
+$string['listTableMod'] = "Скрытые списки уровней";
+$string['listTableYour'] = "Ваши cкрытые списки уровней";
+
+$string['forgotPasswordChangeTitle'] = "Изменить пароль";
+$string["successfullyChangedPass"] = "Пароль успешно сменён!";
+$string['forgotPasswordTitle'] = "Забыли пароль?";
+$string['maybeSentAMessage'] = "Мы отправим вам сообщение на почту, если данный аккаунт существует.";
+$string['forgotPasswordDesc'] = "Здесь вы можете запросить ссылку на изменение пароля, если его забыли!";
+$string['forgotPasswordButton'] = "Запросить ссылку";
 
 /*
 	REUPLOAD
@@ -371,6 +392,7 @@ $string["size"] = "Розмір";
 $string["delete"] = "Видалити";
 $string["change"] = "Змінити";
 $string["chooseFile"] = "Виберіть пісню";
+$string['yourNewSong'] = "Взгляните на вашу новоиспечённую песню!";
 ///errors
 $string["songAddError-2"] = "Невірний URL (можливо, посилання не пряма).";
 $string["songAddError-3"] = "Пісня вже завантажена під ID:";
@@ -525,6 +547,14 @@ $string["modAction23"] = "Змінив(ла) квест";
 $string["modAction24"] = "Переназначив(ла) ігрока";
 $string["modAction25"] = "Створив(ла) квест";
 $string["modAction26"] = "Змінив(ла) нікнейм/пароль користувачу";
+$string["modAction30"] = "Оценил(а) список уровней";
+$string["modAction31"] = "Отправил(а) на оценку список уровней";
+$string["modAction32"] = "Снял(а)/добавил(а) Featured списку уровней";
+$string["modAction33"] = "Скрыл(а)/открыл(а) список уровней";
+$string["modAction34"] = "Удалил(а) список уровней";
+$string["modAction35"] = "Изменил(а) автора списка уровней";
+$string["modAction36"] = "Изменил(а) название списка уровней";
+$string["modAction37"] = "Изменил(а) описание списка уровней";
 $string["everyActions"] = "Будь-які дії";
 $string["everyMod"] = "Всі модератори";
 $string["Kish!"] = "Киш!";
@@ -532,5 +562,6 @@ $string["noPermission"] = "У вас немає прав!";
 $string["noLogin?"] = "Ви не ввійшли в акаунт!";
 $string["LoginBtn"] = "Ввійти в акаунт";
 $string["dashboard"] = "Панель серверу";
+$string["userID"] = 'ID игрока';
 //errors
 $string["errorNoAccWithPerm"] = "Помилка: акаунтів з правом '%s' не було знайдено";

@@ -36,7 +36,7 @@ if(!empty(trim(ExploitPatch::remove($_GET["search"])))) {
 			<p>'.$dl->getLocalizedString("emptySearch").'</p>
 			<button type="button" onclick="a(\'stats/manageSongs.php\', true, false, \'GET\')" class="btn-primary">'.$dl->getLocalizedString("tryAgainBTN").'</button>
 		</form>
-	</div>');
+	</div>', "account");
 		die();
 	} 
 } else {
@@ -60,22 +60,14 @@ foreach($result as &$action){
 	$songsid = $action["ID"];
 	$songIDlol = '<button id="copy'.$action["ID"].'" class="accbtn songidyeah" onclick="copysong('.$action["ID"].')">'.$action["ID"].'</button>';
 	$time = $dl->convertToDate($action["reuploadTime"], true);
-  	$author = $action["authorName"];
-	$name = $action["name"];
+  	$author = htmlspecialchars($action["authorName"]);
+	$name = htmlspecialchars($action["name"]);
 	$size = $action["size"];
  	$delete = '<button onclick="deletesong('.$songsid.')" style="color:#ffbbbb;margin-left:5px;width:max-content;padding:7px 10px;font-size:15px"  class="btn-rendel"><i class="fa-solid fa-xmark"></i></button>';
 	$download = str_replace('http://', 'https://', $action["download"]);
 	$btn = '<button type="button" name="btnsng" id="btn'.$songsid.'" title="'.$author.' — '.$name.'" style="display: contents;color: white;margin: 0;" download="'.$download.'" onclick="btnsong(\''.$songsid.'\');"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 5px;"><i id="icon'.$songsid.'" name="iconlol" class="fa-solid fa-play" aria-hidden="false"></i></div></button>';
 	if(mb_strlen($author) + mb_strlen($name) > 30) $fontsize = 17;
 	elseif(mb_strlen($author) + mb_strlen($name) > 20) $fontsize = 20;
-    if($action["isDisabled"]) {
-		$songsid = '<div style="text-decoration:line-through;color:#8b2e2c">'.$songsid.'</div>';
-		$author = '<div style="text-decoration:line-through;color:#8b2e2c">'.$author.'</div>';
-		$name = '<div style="text-decoration:line-through;color:#8b2e2c">'.$name.'</div>';
-      	$size = '<div style="text-decoration:line-through;color:#8b2e2c">'.$size.'</div>';
-      	$time = '<div style="text-decoration:line-through;color:#8b2e2c">'.$time.'</div>';
-		$btn = '<button type="button" style="display: contents;color: #ffb1ab;margin: 0;"><div class="icon" style="font-size:13px; height:25px;width:25px;background:#373A3F;margin-left: 5px;"><i class="fa-solid fa-xmark" aria-hidden="false"></i></div></button>';
-	}
 	$wholiked = "";
 	$wholiked = $db->prepare("SELECT count(*) FROM favsongs WHERE songID = :id");
 	$wholiked->execute([':id' => $songsid]);
@@ -161,7 +153,7 @@ $dl->printPage($pagel . $bottomrow.'<script>
 				}
 				del.send();
 			}
-		</script>', true, "browse");
+		</script>', true, "account");
 } else {
 	$dl->printSong('<div class="form">
     <h1>'.$dl->getLocalizedString("errorGeneric").'</h1>

@@ -114,6 +114,8 @@ $string["smallPass"] = "Le mot de passe est trop court!";
 $string["passDontMatch"] = "Les mots de passe ne correspondent pas!";
 $string["emailDontMatch"] = "Les emails ne correspondent pas!";
 $string["registered"] = "Vous avez créé un compte avec succès!";
+$string["bigNick"] = "Username is too long!";
+$string["mailExists"] = "There is a registered account using this email!";
 
 $string["changePassTitle"] = "Changer le mot de passe";
 $string["changedPass"] = "Mot de passe changé avec succès! Vous devez vous reconnecter.";
@@ -152,7 +154,7 @@ $string["color"] = "Couleur";
 $string["sameLevels"] = "Vous avez choisi les mêmes niveaux!";
 $string["show"] = "Montrer.";
 $string["packChange"] = "Modifiez le Map Pack";
-$string["createNewPack"] = "Créez un nouveau Map Pack!"; // Translate word "create" like "You'll need to create new map pack!", but its call to action
+$string["createNewPack"] = "Créez un nouveau Map Pack!"; // Translate word "create" like its call to action
 
 $string["gauntletCreate"] = "Créer un Gauntlet";
 $string["gauntletCreateTitle"] = "Créer un Gauntlet";
@@ -167,7 +169,9 @@ $string["level3"] = "Niveau 3";
 $string["level4"] = "Niveau 4";
 $string["level5"] = "Niveau 5";
 $string["gauntletChange"] = "Modifiez le Gauntlet";
-$string["createNewGauntlet"] = "Créez un nouveau Gauntlet!"; // Translate word "create" like "You'll need to create new gauntlet!", but its call to action
+$string["createNewGauntlet"] = "Créez un nouveau Gauntlet!"; // Translate word "create" like its call to action
+$string["gauntletCreateSuccessNew"] = 'You successfully created <b>%1$s</b>!';
+$string["gauntletSelectAutomatic"] = "Choose Gauntlet automatically";
 
 $string["addQuest"] = "Ajouter une quête";
 $string["addQuestDesc"] = "Ici vous pouvez ajouter une quête!";
@@ -212,8 +216,12 @@ $string["addedMod"] = "Vous avez donné les permissions modérateur à un joueur
 $string["addModOneMore"] = "Un moderateur de plus?";
 $string["modAboveYourRole"] = "Tu essayes de donner un rôle supérieur au tiens!";
 $string["makeNewMod"] = "Rendre quelqu'un moderateur!";
-$string["reassignMod"] = "Retirer un moderateur"; // man idk how to say it :'(
+$string["reassignMod"] = "Retirer un moderateur"; // man idk how to say it :'( // sorry
 $string["reassign"] = "Retirer";
+$string['demotePlayer'] = "Démod un joueur";
+$string['demotedPlayer'] = "Vous avez démod le joueur <b>%s</b> avec succès!";
+$string['addedModNew'] = "Vous avez donné les permissions mod à <b>%s</b> avec succès!";
+$string['demoted'] = 'Démod (perms mod supprimé)';
 
 $string["shareCPTitle"] = "Partager les Points Créateur";
 $string["shareCPDesc"] = "Ici vous pouvez partager les Points Créateur avec un joueur!";
@@ -225,6 +233,7 @@ $string["shareCPSuccess"] = "Vous avez partagé les Points Créateur de ce nivea
 $string["shareCPSuccess2"] = "vers le joueur";
 $string["updateCron"] = "Vous devez peut-être mettre à jour vos Points Créateur.";
 $string["shareCPOneMore"] = "Un Partage de plus?";
+$string['shareCPSuccessNew'] = 'Vous avez partagé avec succès vos points créateur (CP) du niveau <b>%1$s</b> avec <b>%2$s</b>!';
 
 $string["messenger"] = "Messages";
 $string["write"] = "Écrire";
@@ -287,9 +296,9 @@ $string["record"] = 'Record';
 $string["recordDeleted"] = 'Le record à été supprimé!';
 $string["changeDemon"] = 'Change demon';
 $string["demonDeleted"] = 'Demon was deleted!';
-$string["changedDemon"] = 'You replaced <b>%s</b> to <b>%d</b> place!';
-$string["changeDemonDesc"] = 'Here you can change a demon!<br>
-If you want to delete demon, set place to 0.';
+$string["changedDemon"] = 'Vous avez replacé <b>%s</b> à la <b>%d</b>e(re) place!';
+$string["changeDemonDesc"] = 'Ici, vous pouvez changer un demon!<br>
+Pour le supprimer, mettez la place en 0';
 
 $string["didntActivatedEmail"] = 'Vous n\'avez pas activé votre compte par email!';
 $string["checkMail"] = 'Vous devrez vérifier vos mails...';
@@ -340,10 +349,22 @@ $string["createClan"] = "Créer le clan";
 $string["createdClan"] = "Vous avez créé le clan <span style='font-weight:700;color:#%s'>%s</span> avec succès!";
 $string["createClanDesc"] = "Ici vous pouvez créer un clan!";
 $string["create"] = "Créer";
-$string["mainSettings"] = "Main settings";
+$string["mainSettings"] = "Réglages principaux";
+$string["takenClanName"] = "Le nom du clan est déjà prit!";
 
-$string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> suggested <b>%4$s%3$s</b> for</text><text class="levelname">%2$s</text>'; // %1$s - Mod username, %2$s - level name, %3$s - x stars, %4$s - Featured/Epic (%4$s%3$s - Featured, x stars)
-$string["reportedName"] = '%1$s<text class="dltext"> was reported</text><text class="levelname">%2$s</text>';
+$string["suggestedName"] = '<button type="button" onclick="a(\'profile/%1$s\', true, true)" class="accbtn" name="accountID">%1$s</button><text class="dltext"> à suggéré <b>%4$s%3$s</b> pour</text><text class="levelname">%2$s</text>'; // %1$s - Mod username, %2$s - level name, %3$s - x stars, %4$s - Featured/Epic (%4$s%3$s - Featured, x stars)
+$string["reportedName"] = '%1$s<text class="dltext"> a été signalé</text><text class="levelname">%2$s</text>';
+
+$string['listTable'] = "Listes";
+$string['listTableMod'] = "Listes non répértoriées";
+$string['listTableYour'] = "Vos listes non répértoriées";
+
+$string['forgotPasswordChangeTitle'] = "Change password";
+$string["successfullyChangedPass"] = "Password was successfully changed!";
+$string['forgotPasswordTitle'] = "Forgot password?";
+$string['maybeSentAMessage'] = "We'll send you a message if this account exists.";
+$string['forgotPasswordDesc'] = "Here you can request change password link if you forgot it!";
+$string['forgotPasswordButton'] = "Request link";
 
 /*
 	REUPLOAD
@@ -371,6 +392,7 @@ $string["size"] = "Taille";
 $string["delete"] = "Supprimer";
 $string["change"] = "Changer";
 $string["chooseFile"] = "Choisir une chanson";
+$string['yourNewSong'] = "Take a look at your new song!";
 ///errors
 $string["songAddError-2"] = "URL Invalide";
 $string["songAddError-3"] = "Cette chanson à été déjà reupload avec ID:";
@@ -525,6 +547,14 @@ $string["modAction23"] = "Quête modifiée";
 $string["modAction24"] = "Reassigned a player";
 $string["modAction25"] = "A créé une quête";
 $string["modAction26"] = "A changé le nom d'utilisateur/mot de passe du joueur";
+$string["modAction30"] = "La liste a été rate";
+$string["modAction31"] = "La liste a été sent (envoyé aux modérateurs)";
+$string["modAction32"] = "La list a été (ou a eu son) featured (supprimé)";
+$string["modAction33"] = "Liste publié (ou enlevé)";
+$string["modAction34"] = "Liste supprimé";
+$string["modAction35"] = "Changé le créateur de la liste";
+$string["modAction36"] = "Changé le nom de la liste";
+$string["modAction37"] = "Changé la description de la liste"; // snoring
 $string["everyActions"] = "Toutes les actions";
 $string["everyMod"] = "Tous les modérateurs";
 $string["Kish!"] = "Part d'ici!";
@@ -532,5 +562,6 @@ $string["noPermission"] = "Vous n'avez pas la permission!";
 $string["noLogin?"] = "Vous n'êtes pas connecté à votre compte!";
 $string["LoginBtn"] = "Se connecter au compte";
 $string["dashboard"] = "Tableau de bord";
+$string["userID"] = 'ID Utilisateur (userid)';
 //errors
 $string["errorNoAccWithPerm"] = "Erreur: Aucun compte avec la permission '%s' a été trouvé";

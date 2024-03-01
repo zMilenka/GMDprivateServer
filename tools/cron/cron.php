@@ -1,8 +1,6 @@
 <?php
-ini_set('display_errors', 0);
-error_reporting(NULL);
 chdir(dirname(__FILE__));
-set_time_limit(0);
+if(function_exists("set_time_limit")) set_time_limit(0);
 include "fixcps.php";
 ob_flush();
 flush();

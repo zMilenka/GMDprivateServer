@@ -1,6 +1,6 @@
 <?php
 chdir(dirname(__FILE__));
-set_time_limit(0);
+if(function_exists("set_time_limit")) set_time_limit(0);
 ini_set("memory_limit","128M");
 ini_set("post_max_size","50M");
 ini_set("upload_max_filesize","50M");
@@ -13,7 +13,7 @@ use Defuse\Crypto\KeyProtectedByPassword;
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\Key;*/
 //here im getting all the data
-$userName = ExploitPatch::remove($_POST["userName"]);
+$userName = ExploitPatch::charclean($_POST["userName"]);
 $password = !empty($_POST["password"]) ? $_POST["password"] : "";
 $saveData = ExploitPatch::remove($_POST["saveData"]);
 
