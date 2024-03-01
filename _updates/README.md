@@ -14,4 +14,4 @@ This directory contains all SQL files containing updates made to the database AF
 7. Upload the new server files including your new config files (if applicable) to the server.
 8. Import all SQL files in this directory with timestamps newer than your current version `database.sql`. (You can use the import feature in phpMyAdmin for this).
 
-TL;DR upload new server files, import relevant SQL files from this directory
+ TL;DR upload new server files, import relevant SQL files from this directory
